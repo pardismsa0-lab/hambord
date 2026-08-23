@@ -1,1 +1,403 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+  --font-display: "Lalezar", "Vazirmatn", sans-serif;
+
+  --color-navy-50: #eef4fb;
+  --color-navy-100: #dce8f7;
+  --color-navy-200: #bcd2ec;
+  --color-navy-300: #92b4dc;
+  --color-navy-400: #5c8cc4;
+  --color-navy-500: #2f66a8;
+  --color-navy-600: #1a4b8c;
+  --color-navy-700: #154076;
+  --color-navy-800: #10335e;
+  --color-navy-900: #0b2545;
+  --color-navy-950: #071a31;
+
+  --color-sun-50: #fef8ea;
+  --color-sun-100: #fdf0d2;
+  --color-sun-200: #fbe3a8;
+  --color-sun-300: #f9d274;
+  --color-sun-400: #f7bc47;
+  --color-sun-500: #f5a623;
+  --color-sun-600: #de8e0b;
+  --color-sun-700: #b87208;
+  --color-sun-800: #8f580a;
+
+  --color-leaf-50: #eaf7f0;
+  --color-leaf-100: #d2eedf;
+  --color-leaf-200: #a8ddc2;
+  --color-leaf-300: #74c69f;
+  --color-leaf-400: #47b57f;
+  --color-leaf-500: #27ae60;
+  --color-leaf-600: #1e9150;
+  --color-leaf-700: #187542;
+  --color-leaf-800: #135c35;
+
+  --color-paper: #f4f6f9;
+  --color-ink: #122338;
+
+  --shadow-card: 0 1px 2px rgb(11 37 69 / 0.06), 0 4px 16px -4px rgb(11 37 69 / 0.1);
+  --shadow-lift: 0 2px 4px rgb(11 37 69 / 0.08), 0 16px 32px -12px rgb(11 37 69 / 0.22);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-sun-200);
+  color: var(--color-navy-900);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-sun-500);
+  outline-offset: 2px;
+}
+
+/* ---------- decorative backgrounds ---------- */
+.pattern-dots {
+  background-image: radial-gradient(rgb(255 255 255 / 0.14) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+.pattern-grid-dark {
+  background-image:
+    linear-gradient(rgb(26 75 140 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(26 75 140 / 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* ---------- film grain overlay ---------- */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- shimmer skeleton ---------- */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #e4e9f0;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.65), transparent);
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ---------- marquee ticker ---------- */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- floating ---------- */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(var(--tilt, 0deg));
+  }
+}
+.animate-floaty {
+  animation: floaty 6s ease-in-out infinite;
+}
+.animate-floaty-slow {
+  animation: floaty 9s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(245 166 35 / 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgb(245 166 35 / 0);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-bar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.pulse-bar {
+  animation: pulse-bar 1.1s ease-in-out infinite;
+}
+
+/* ---------- ken burns ---------- */
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-1.5%, -1.5%);
+  }
+}
+.kenburns {
+  animation: kenburns 18s ease-in-out infinite alternate;
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px) scale(0.985);
+  filter: blur(4px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* ---------- page transition ---------- */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-enter {
+  animation: page-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------- value pop (price change) ---------- */
+@keyframes value-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+    color: var(--color-leaf-600);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.value-pop {
+  animation: value-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- tier glow ---------- */
+@keyframes tier-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(245 166 35 / 0);
+  }
+  50% {
+    box-shadow: 0 0 24px 2px rgb(245 166 35 / 0.55);
+  }
+}
+.tier-glow {
+  animation: tier-glow 1.4s ease-in-out infinite;
+}
+
+/* ---------- shine sweep on hover ---------- */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+.shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60%;
+  transform: translateX(180%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.shine:hover::before {
+  transform: translateX(-180%) skewX(-20deg);
+}
+
+/* ---------- press feedback ---------- */
+.press:active {
+  transform: scale(0.97);
+}
+
+/* ---------- toast / feed ---------- */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.toast-in {
+  animation: toast-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes feed-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.feed-in {
+  animation: feed-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.slide-up {
+  animation: slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.fade-in {
+  animation: fadein 0.6s ease both;
+}
+
+/* ---------- misc ---------- */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.progress-rail {
+  transform-origin: right;
+}
+
+/* ---------- drop cap ---------- */
+.dropcap::first-letter {
+  float: right;
+  font-family: var(--font-display);
+  font-size: 3.4em;
+  line-height: 0.9;
+  padding-inline-start: 0.12em;
+  margin-inline-start: 0.08em;
+  color: var(--color-navy-700);
+}
+
+/* ---------- custom scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-navy-200);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-navy-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer::after,
+  .marquee-track,
+  .animate-floaty,
+  .animate-floaty-slow,
+  .pulse-dot,
+  .pulse-bar,
+  .kenburns,
+  .reveal,
+  .page-enter,
+  .value-pop,
+  .tier-glow,
+  .toast-in,
+  .feed-in,
+  .slide-up,
+  .fade-in {
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .shine::before {
+    display: none;
+  }
+}
